@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Montserrat:wght@600&family=Roboto+Condensed:wght@500&display=swap');
 
 
 @theme inline {
@@ -8,3 +9,8 @@
     0px 1px 0px 0px rgba(25, 28, 33, 0.02),
     0px 0px 0px 1px rgba(25, 28, 33, 0.08);
 }
+
+@theme {
+  --font-bungee: "BungeeInline", sans-serif;
+}
+

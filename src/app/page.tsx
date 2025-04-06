@@ -1,16 +1,16 @@
 "use client";
+import LandingPage from "@/components/landingPage";
+import { NavbarDemo } from "@/components/navbar";
 import { useRouter } from "next/navigation";
-
 
 export default function Home() {
   const router = useRouter();
   const click = () => {
-  router.push("/signin")
-  }
+    router.push("/signin");
+  };
   return (
-   <div>
-    hey its landing page!
-    <button onClick={click} className="bg-blend-hue">click me!</button>
-   </div>
+    <div className="bg-black text-white h-full">
+      <NavbarDemo />
+    </div>
   );
 }

@@ -10,17 +10,28 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { GlowingEffect } from "./ui/glowing-effect";
 
 export default function SignupFormDemo() {
   const router = useRouter();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
-    router.push('/signin')
+    // router.push('/signin')
   };
   return (
-    <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
-      <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200 flex justify-center items-center">
+    <div className="relative shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
+<GlowingEffect
+        blur={0}
+        borderWidth={2}
+        spread={50}
+        glow={true}
+        disabled={false}
+        proximity={64}
+        inactiveZone={0}
+      />
+<div className="relatuve border-0.75">
+  <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200 flex justify-center items-center">
         Welcome to Kinnected
       </h2>
       <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
@@ -80,6 +91,9 @@ export default function SignupFormDemo() {
           </button>
         </div>
       </form>
+</div>
+
+      
     </div>
   );
 }
