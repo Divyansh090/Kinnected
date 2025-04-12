@@ -10,15 +10,63 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GlowingEffect } from "./ui/glowing-effect";
+import { GlowingEffect } from "./ui/glowing-effect";;
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import { useForm } from "react-hook-form";
+
+const formSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Invalid email"),
+  password: z.string().min(8, "Password must have at least 8 characters"),
+});
 
 export default function SignInForm() {
   const router = useRouter();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted");
-    // router.push("/dashboard");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+ 
+const Google = async () => {
+  try {
+    const happen = await signIn("google");
+    if(happen?.error){
+      console.error("Sign-in failed:", happen.error);
+    }else{
+      router.push("/dashboard");
+    }
+  } catch (error) {
+    console.error("Error during sign-in:", error);
+  }
+  
+}
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const signInData = await signIn("credentials", {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (signInData?.error) {
+        console.error("Sign-in failed:", signInData.error);
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+    }
   };
+
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-none  p-4 md:rounded-2xl md:p-8 bg-black text-white relative">
       <GlowingEffect
@@ -36,14 +84,14 @@ export default function SignInForm() {
         </h2>
         <p className="mt-2 max-w-sm text-sm  text-neutral-300"></p>
 
-        <form className="my-8" onSubmit={handleSubmit}>
+        <form className="my-8" onSubmit={handleSubmit(onSubmit)}>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+            <Input    {...register("email")} id="email" placeholder="projectmayhem@fc.com" type="email" />
           </LabelInputContainer>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" placeholder="••••••••" type="password" />
+            <Input    {...register("password")} id="password" placeholder="••••••••" type="password" />
           </LabelInputContainer>
 
           <button
@@ -65,17 +113,18 @@ export default function SignInForm() {
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent  to-transparent via-neutral-700" />
 
           <div className="flex flex-col space-y-4">
-            <button
+            {/* <button
               className="group/btn  relative flex h-10 w-full items-center justify-start space-x-2 rounded-md  px-4 font-medium text-black bg-zinc-900 shadow-[0px_0px_1px_1px_#262626]"
               type="submit"
             >
               <IconBrandGithub className="h-4 w-4 text-neutral-300" />
               <span className="text-sm text-neutral-300">GitHub</span>
               <BottomGradient />
-            </button>
+            </button> */}
             <button
               className="group/btn  relative flex h-10 w-full items-center justify-start space-x-2 rounded-md  px-4 font-medium text-black bg-zinc-900 shadow-[0px_0px_1px_1px_#262626]"
               type="submit"
+              onClick={Google}
             >
               <IconBrandGoogle className="h-4 w-4 text-neutral-300" />
               <span className="text-sm text-neutral-300">Google</span>

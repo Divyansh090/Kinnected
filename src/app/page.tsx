@@ -1,6 +1,6 @@
 "use client";
 import LandingPage from "@/components/landingPage";
-import { NavbarDemo } from "@/components/navbar";
+import { NavbarDemo } from "@/components/landingNavbar";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
